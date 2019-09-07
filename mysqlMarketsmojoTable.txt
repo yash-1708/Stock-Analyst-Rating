@@ -1,0 +1,12 @@
+CREATE TABLE `marketsmojorecos` (
+  `srno` bigint(10) NOT NULL AUTO_INCREMENT,
+  `index` bigint(20) DEFAULT NULL,
+  `broker` text,
+  `company_name` text,
+  `current_price` text,
+  `recomended_buying` text,
+  `predict_date` date DEFAULT NULL,
+  `target_price` text,
+  PRIMARY KEY (`srno`),
+  KEY `ix_recos_index` (`index`)
+) ENGINE=InnoDB AUTO_INCREMENT=19328 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
