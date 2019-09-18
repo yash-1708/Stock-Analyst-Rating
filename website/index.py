@@ -15,7 +15,7 @@ def index():
         target_price=request.form['target_price']
         close_price=request.form['close_price']
         print(broker_name, " ", company_name, " ", current_price, " ", recommanded_price, " ", predict_date, " ", target_price, " ", close_price)
-    
+        #Write database addition code here
         if form.validate():
         # Save the comment here.
             flash('Record added Successfully')
