@@ -1,6 +1,10 @@
 {% extends "layout.html"%}
 {% block content %}
-
+<script>
+setTimeout(function() {
+    $('.alert').remove();
+}, 4000)
+</script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 <!-- <div class="container">
     <h2 class="text-center">Contac Form</h2>
@@ -58,38 +62,52 @@
 	</div>
 </div> -->
 <div class="container">
+      <!-- Success message -->
+      <div class="alert alert-success" role="alert" id="success_message">
+          {% with messages = get_flashed_messages() %}
+         {% if messages %}
+            <button type="button" class="close" data-dismiss='alert'>&times;</button>
+            {% for message in messages %}
+               {{ message }}
+            {% endfor %}
+         {% endif %}
+      {% endwith %}
+      <i class="glyphicon glyphicon-thumbs-up"></i></div>
 
-        <form class="well form-horizontal" action=" " method="post"  id="contact_form">
+        <form class="well form-horizontal" action=" " method="post"  id="contact_form" validate>
+          {{form.hidden_tag()}}
     <fieldset>
     
     <!-- Form Name -->
-    <legend><center><h2><b>Data Entry Form</b></h2></center></legend><br>
+    <legend class="border-bottom mb-4"><center><h2><b>Data Entry Form</b></h2></center></legend><br>
     
     <!-- Text input-->
     
     <div class="form-group">
-      <label class="col-md-4 control-label">First Name</label>  
+      <!-- <label class="col-md-4 control-label">Broker Name</label>   -->
+      {{form.broker_name.label(class="col-md-4 control-label")}}
       <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-      <input  name="first_name" placeholder="First Name" class="form-control"  type="text">
-        </div>
+      <input  name="broker_name" placeholder="Enter Broker Name" class="form-control"  type="text" required>
+      <!-- {{form.broker_name(class="form-control",placeholder="Enter Broker Name")}}     -->
+    </div>
       </div>
     </div>
     
     <!-- Text input-->
     
     <div class="form-group">
-      <label class="col-md-4 control-label" >Last Name</label> 
+      <label class="col-md-4 control-label" >Company Name</label> 
         <div class="col-md-4 inputGroupContainer">
         <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-      <input name="last_name" placeholder="Last Name" class="form-control"  type="text">
+      <input name="company_name" placeholder="Company Name" class="form-control"  type="text" required>
         </div>
       </div>
     </div>
     
-      <div class="form-group"> 
+      <!-- <div class="form-group"> 
       <label class="col-md-4 control-label">Department / Office</label>
         <div class="col-md-4 selectContainer">
         <div class="input-group">
@@ -108,16 +126,16 @@
         </select>
       </div>
     </div>
-    </div>
+    </div> -->
       
     <!-- Text input-->
     
     <div class="form-group">
-      <label class="col-md-4 control-label">Username</label>  
+      <label class="col-md-4 control-label">Current Price</label>  
       <div class="col-md-4 inputGroupContainer">
       <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-      <input  name="user_name" placeholder="Username" class="form-control"  type="text">
+      <input  name="current_price" placeholder="0" class="form-control"  type="number" required>
         </div>
       </div>
     </div>
@@ -125,11 +143,11 @@
     <!-- Text input-->
     
     <div class="form-group">
-      <label class="col-md-4 control-label" >Password</label> 
+      <label class="col-md-4 control-label" >Recommanded Price</label> 
         <div class="col-md-4 inputGroupContainer">
         <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-      <input name="user_password" placeholder="Password" class="form-control"  type="password">
+      <input name="recommanded_price" placeholder="0" class="form-control"  type="number" required>
         </div>
       </div>
     </div>
@@ -137,22 +155,22 @@
     <!-- Text input-->
     
     <div class="form-group">
-      <label class="col-md-4 control-label" >Confirm Password</label> 
+      <label class="col-md-4 control-label" >Predict Date</label> 
         <div class="col-md-4 inputGroupContainer">
         <div class="input-group">
       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-      <input name="confirm_password" placeholder="Confirm Password" class="form-control"  type="password">
+      <input name="predict_date" placeholder="" class="form-control"  type="date" required>
         </div>
       </div>
     </div>
     
     <!-- Text input-->
            <div class="form-group">
-      <label class="col-md-4 control-label">E-Mail</label>  
+      <label class="col-md-4 control-label">Target Price</label>  
         <div class="col-md-4 inputGroupContainer">
         <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-      <input name="email" placeholder="E-Mail Address" class="form-control"  type="text">
+      <input name="target_price" placeholder="0" class="form-control"  type="number" required>
         </div>
       </div>
     </div>
@@ -161,24 +179,21 @@
     <!-- Text input-->
            
     <div class="form-group">
-      <label class="col-md-4 control-label">Contact No.</label>  
+      <label class="col-md-4 control-label">Close Price</label>  
         <div class="col-md-4 inputGroupContainer">
         <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-      <input name="contact_no" placeholder="(639)" class="form-control" type="text">
+      <input name="close_price" placeholder="0" class="form-control" type="number" required>
         </div>
       </div>
     </div>
     
     <!-- Select Basic -->
-    
-    <!-- Success message -->
-    <div class="alert alert-success" role="alert" id="success_message">Success <i class="glyphicon glyphicon-thumbs-up"></i> Success!.</div>
-    
+
     <!-- Button -->
     <div class="form-group">
       <label class="col-md-4 control-label"></label>
-      <div class="col-md-4"><br>
+      <div class="col-md-4">
         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="submit" class="btn btn-warning" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSUBMIT <span class="glyphicon glyphicon-send"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
       </div>
     </div>
