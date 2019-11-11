@@ -1,0 +1,12 @@
+CREATE TABLE `test` (
+  `srno` bigint(10) NOT NULL AUTO_INCREMENT,
+  `index` bigint(10) DEFAULT NULL,
+  `broker` text,
+  `company_name` text,
+  `current_price` text,
+  `recomended_buying` text,
+  `predict_date` text,
+  `target_price` text,
+  `close_price` text,
+  PRIMARY KEY (`srno`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
