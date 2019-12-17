@@ -1,0 +1,51 @@
+{% extends "layout.html"%}
+{% block content %}
+
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='home.css') }}">
+<style>
+    .checked {
+      color: orange;
+    }
+    </style>
+<div class="table-users">
+    <div class="header">Broker list
+        <div style="text-align: right; font-size:small">
+                <select>
+                        <option value="Sort By">Sort By</option>
+                        <option value="1">hightToLow</option>
+                        <option value="2">LowToHigh</option>
+                        <option value="3">Alphabetic</option>
+                </select>
+                <select>
+                        <option value="Filter By">Filter By</option>
+                        <option value="saab">hightToLow</option>
+                        <option value="mercedes">LowToHigh</option>
+                        <option value="audi">Alphabetic</option>
+                </select>
+        </div>
+        <div style="text-align: right;">
+               
+        </div>
+    </div>
+    
+    <table cellspacing="0">
+       <tr style="text-align: center;">
+          <th></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Rating</th>
+       </tr>
+       {%for i in range(1, 5)%} 
+  
+       <tr>
+        <td><img src="http://lorempixel.com/100/100/people/11" alt="" /></td>
+        <td>Jane DoeJane DoeJane Doe</td>
+        <td>Jane DoeJane Doe.doe@foo.com</td>
+        <td>{%for i in range(1, i%4)%}<span>★</span>{%endfor%}<span>★</span></td>
+     </tr>
+
+   {%endfor%}
+
+    </table>
+ </div>
+ {% endblock content%}
