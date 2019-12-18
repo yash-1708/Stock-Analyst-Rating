@@ -12,8 +12,12 @@ from sqlalchemy.sql import text
 app=Flask(__name__)
 app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
 @app.route('/',methods=['GET', 'POST'])
-@app.route('/index')
-def index():
+@app.route('/home')
+def home():
+    return render_template('/home/home.html')
+
+@app.route('/recomm')
+def enterRecommendation():
     form=RecordEnterForm(request.form)
     if request.method == 'POST':
         broker_name=request.form['broker_name']
@@ -41,6 +45,7 @@ def index():
         else:
             flash('Error: occurred ')
     return render_template('/Enter_Record/recordEnter.html',form=form)
+
 
 if __name__=='__main__':
     app.run(debug=True)
