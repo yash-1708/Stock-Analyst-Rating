@@ -2,6 +2,12 @@
 {% block content %}
 
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='home.css') }}">
+<script>
+        function getBrokerInfo(i){
+                console.log("function called");
+                location.replace("https://www.w3schools.com");
+        }
+</script>
 <style>
     .checked {
       color: orange;
@@ -37,7 +43,7 @@
        </tr>
        {%for i in range(1, 5)%} 
   
-       <tr>
+       <tr style="cursor:pointer;" onclick="getBrokerInfo({{i}})">
         <td><img src="http://lorempixel.com/100/100/people/11" alt="" /></td>
         <td>Jane DoeJane DoeJane Doe</td>
         <td>Jane DoeJane Doe.doe@foo.com</td>
