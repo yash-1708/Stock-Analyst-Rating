@@ -14,8 +14,23 @@ app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
 @app.route('/',methods=['GET', 'POST'])
 @app.route('/home')
 def home():
+    #get records from database with rating ,Each Record must contain ID of Database
+    #and store it in List
+    #we will iterate this list in homepage
     return render_template('/home/home.html')
 
+
+
+#Broker Info Page function
+@app.route('/brokerInfo/<int:id>')
+def brokerInfo(id):
+    #fetch Broker Information On basis of id from database and store it in object
+    #this object is referred from html
+    return render_template('/brokerInfo/brokerInfo.html')
+
+
+
+#Add new Recommendation function
 @app.route('/recomm')
 def enterRecommendation():
     form=RecordEnterForm(request.form)
