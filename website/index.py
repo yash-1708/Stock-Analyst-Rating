@@ -30,6 +30,18 @@ def brokerInfo(id):
 
 
 
+#Year wise Broker recommandation info function
+@app.route('/yearwiseInfo/<int:id>')
+def yearwiseInfo(id):
+    #fetch Broker stock info yearwise Information On basis of id from database and store it in object
+    #this object is referred from html
+    return render_template('/yearwiseinfo/yearwiseinfo.html')
+
+@app.route('/recommandlist')
+def recommandlist():
+    #this object is referred from html
+    return render_template('/recommandlist/recommandlist.html')
+
 #Add new Recommendation function
 @app.route('/recomm')
 def enterRecommendation():
