@@ -9,43 +9,39 @@
     }
     </style>
 <div class="table-users">
-    <div class="header">Broker list
+    <div class="header">{{yearNo}}
         <div style="text-align: right; font-size:small">
-                <select>
-                        <option value="Sort By">Sort By</option>
-                        <option value="1">hightToLow</option>
-                        <option value="2">LowToHigh</option>
-                        <option value="3">Alphabetic</option>
-                </select>
-                <select>
-                        <option value="Filter By">Filter By</option>
-                        <option value="saab">hightToLow</option>
-                        <option value="mercedes">LowToHigh</option>
-                        <option value="audi">Alphabetic</option>
-                </select>
-        </div>
-        <div style="text-align: right;">
-               
+                <form action="/yearwiseInfo" method="GET" name = "filters">
+                        <select name = 'orderBy'>
+                                <option value="ascending" selected>Ascending</option>
+                                <option value="descending">Descending</option>
+                        </select>
+                        <select name = 'year'>
+                                <option value='2016'>2016</option>
+                                <option value='2017'>2017</option>
+                                <option value='2018'>2018</option>
+                                <option value='9999' selected>Cumulative</option>
+                        </select>
+                        <button type="submit" >Apply</button>
+
+                </form>
         </div>
     </div>
     
     <table cellspacing="0">
        <tr style="text-align: center;">
-          <th></th>
+          <!-- <th>srno</th> -->
           <th>Name</th>
           <!-- <th>website</th> -->
           <th>Rating</th>
        </tr>
-       {%for i in range(1, 5)%} 
-  
-       <tr style="cursor:pointer;" onclick='location.href="/yearwiseInfo/1"'>
-        <td><img src="http://lorempixel.com/100/100/people/11" alt="" /></td>
-        <td>Jane DoeJane DoeJane Doe</td>
-        <!-- <td style="cursor:pointer; color: mediumblue;" ><button onclick='window.open("https://www.motilaloswal.com/")'>https://www.motilaloswal.com/</button></td> -->
-        <td>{%for i in range(1, i%4)%}<span>★</span>{%endfor%}<span>★</span></td>
-     </tr>
-
-   {%endfor%}
+       {% for row in output_data %}
+            <tr>
+                <!-- <td>{{row[0]}}</td> -->
+                <td>{{row[1]}}</td>
+                <td>{{row[5]}}</td>
+            </tr>
+       {% endfor %}
 
     </table>
  </div>

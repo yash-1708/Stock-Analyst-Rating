@@ -11,13 +11,21 @@ from sqlalchemy.sql import text
 
 app=Flask(__name__)
 app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
+
 @app.route('/',methods=['GET', 'POST'])
 @app.route('/home')
 def home():
     #get records from database with rating ,Each Record must contain ID of Database
     #and store it in List
     #we will iterate this list in homepage
-    return render_template('/home/home.html')
+    mydatabase = mysql.connector.connect(
+    host = '127.0.0.1', user = 'root',
+    passwd = 'yash', database = 'mainschema')
+    mycursor = mydatabase.cursor()
+    mycursor.execute('SELECT * FROM finalrating')
+    data = mycursor.fetchall()
+    title = "Broker Ratings"
+    return render_template('/home/home.html', output_data = data, yearNo = title)
 
 
 
@@ -30,12 +38,40 @@ def brokerInfo(id):
 
 
 
-#Year wise Broker recommandation info function
-@app.route('/yearwiseInfo/<int:id>')
-def yearwiseInfo(id):
+#Year wise Broker recommendation info function
+@app.route('/yearwiseInfo')
+def yearwiseInfo():
     #fetch Broker stock info yearwise Information On basis of id from database and store it in object
     #this object is referred from html
-    return render_template('/yearwiseinfo/yearwiseinfo.html')
+    if request.method == 'GET':
+        year = request.args.get('year')
+        orderBy = request.args.get('orderBy')
+        mydatabase = mysql.connector.connect(host = '127.0.0.1', user = 'root',passwd = 'yash', database = 'mainschema')
+        mycursor = mydatabase.cursor()
+        
+        if orderBy == 'descending' :
+            sqladd = " ORDER BY Rating DESC;"
+        else :
+            sqladd = " ORDER BY Rating ASC;"
+
+        sqlquery = "SELECT * FROM finalrating"
+        
+        if year == '2016' :
+            sqlquery = "SELECT * FROM finalrating2016"
+        elif year == '2017' :
+            sqlquery = "SELECT * FROM finalrating2017"
+        elif year == '2018' :
+            sqlquery = "SELECT * FROM finalrating2018"
+        else :
+            sqlquery = "SELECT * FROM finalrating"
+
+        sqlquery = sqlquery + sqladd
+        mycursor.execute(sqlquery)
+        data = mycursor.fetchall()
+        title = "Broker Ratings"
+        if not year == '9999':
+            title = year + " Broker Ratings"
+    return render_template('/home/home.html', output_data = data, yearNo = title)
 
 @app.route('/recommandlist')
 def recommandlist():
