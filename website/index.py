@@ -10,7 +10,7 @@ from sqlalchemy.sql import text
 
 
 app=Flask(__name__)
-app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
+#app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
 
 @app.route('/',methods=['GET', 'POST'])
 @app.route('/home')
@@ -19,8 +19,8 @@ def home():
     #and store it in List
     #we will iterate this list in homepage
     mydatabase = mysql.connector.connect(
-    host = '127.0.0.1', user = 'root',
-    passwd = 'yash', database = 'mainschema')
+    host = 'mbt-smars-mysql.mysql.database.azure.com', user = 'smarsproddbuser@mbt-smars-mysql',
+    passwd = 'modern@1234', database = 'mainschema')
     mycursor = mydatabase.cursor()
     mycursor.execute('SELECT * FROM finalrating')
     data = mycursor.fetchall()
@@ -46,7 +46,7 @@ def yearwiseInfo():
     if request.method == 'GET':
         year = request.args.get('year')
         orderBy = request.args.get('orderBy')
-        mydatabase = mysql.connector.connect(host = '127.0.0.1', user = 'root',passwd = 'yash', database = 'mainschema')
+        mydatabase = mysql.connector.connect(host = 'mbt-smars-mysql.mysql.database.azure.com', user = 'smarsproddbuser@mbt-smars-mysql',passwd = 'modern@1234', database = 'mainschema')
         mycursor = mydatabase.cursor()
         
         if orderBy == 'descending' :
@@ -94,9 +94,9 @@ def enterRecommendation():
         
         
         
-        database_username = 'root'
-        database_password = 'yash'
-        database_ip       = '127.0.0.1'
+        database_username = 'smarsproddbuser@mbt-smars-mysql'
+        database_password = 'modern@1234'
+        database_ip       = 'mbt-smars-mysql.mysql.database.azure.com'
         database_name     = 'mainschema'
         database_connection = sqlalchemy.create_engine('mysql+mysqlconnector://{0}:{1}@{2}/{3}'.format(database_username, database_password, database_ip, database_name))
 
