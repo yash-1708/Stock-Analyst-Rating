@@ -18,6 +18,7 @@ def home():
     data = mycursor.fetchall()
     title = "Broker Ratings"
     return render_template('/home/home.html', output_data = data, yearNo = title)
+    #return render_template('/home/home.html', yearNo = title)
 
 
 
