@@ -1,11 +1,11 @@
 from flask import Flask,render_template,request,flash
-#from recordEnterFrom import RecordEnterForm
+from recordEnterFrom import RecordEnterForm
 import mysql.connector
 
 
 cnx = mysql.connector.connect(user="smarsproddbuser@mbt-smars-mysql", password='modern@1234', host="mbt-smars-mysql.mysql.database.azure.com", port=3306, database='mainschema', ssl_disabled=True)
 app=Flask(__name__)
-#app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
+app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
 
 @app.route('/',methods=['GET', 'POST'])
 @app.route('/home')
@@ -70,27 +70,27 @@ def recommandlist():
     return render_template('/recommandlist/recommandlist.html')
 
 #Add new Recommendation function
-# @app.route('/recomm')
-# def enterRecommendation():
-#     form=RecordEnterForm(request.form)
-#     if request.method == 'POST':
-#         broker_name=request.form['broker_name']
-#         company_name=request.form['company_name']
-#         current_price=request.form['current_price']
-#         recomended_price=request.form['recomended_price']
-#         predict_date=request.form['predict_date']
-#         target_price=request.form['target_price']
-#         close_price=request.form['close_price']
-#         print(broker_name, " ", company_name, " ", current_price, " ", recomended_price, " ", predict_date, " ", target_price, " ", close_price)
+@app.route('/recomm')
+def enterRecommendation():
+    form=RecordEnterForm(request.form)
+    if request.method == 'POST':
+        broker_name=request.form['broker_name']
+        company_name=request.form['company_name']
+        current_price=request.form['current_price']
+        recomended_price=request.form['recomended_price']
+        predict_date=request.form['predict_date']
+        target_price=request.form['target_price']
+        close_price=request.form['close_price']
+        print(broker_name, " ", company_name, " ", current_price, " ", recomended_price, " ", predict_date, " ", target_price, " ", close_price)
 
-#         if form.validate():
-#         # Save the comment here.
-#             flash('Record added Successfully')
-#             #result = cnx.execute(text("INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES ('"+broker_name+"','"+company_name+"','"+current_price+"','"+recomended_price+"','"+predict_date+"','"+target_price+"','"+close_price+"');"))
+        if form.validate():
+        # Save the comment here.
+            flash('Record added Successfully')
+            result = cnx.execute(text("INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES ('"+broker_name+"','"+company_name+"','"+current_price+"','"+recomended_price+"','"+predict_date+"','"+target_price+"','"+close_price+"');"))
 
-#         else:
-#             flash('Error: occurred ')
-#     return render_template('/Enter_Record/recordEnter.html',form=form)
+        else:
+            flash('Error: occurred ')
+    return render_template('/Enter_Record/recordEnter.html',form=form)
 
 
 if __name__=='__main__':
