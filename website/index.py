@@ -1,14 +1,9 @@
 from flask import Flask,render_template,request,flash
 from recordEnterFrom import RecordEnterForm
-import sqlalchemy
-from datetime import datetime
 import mysql.connector
-from sqlalchemy import create_engine
-import numpy as np
-import pandas as pd
-from sqlalchemy.sql import text
 
 
+cnx = mysql.connector.connect(user="smarsproddbuser@mbt-smars-mysql", password='modern@1234', host="mbt-smars-mysql.mysql.database.azure.com", port=3306, database='mainschema', ssl_disabled=True)
 app=Flask(__name__)
 #app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
 
@@ -18,10 +13,7 @@ def home():
     #get records from database with rating ,Each Record must contain ID of Database
     #and store it in List
     #we will iterate this list in homepage
-    mydatabase = mysql.connector.connect(
-    host = 'mbt-smars-mysql.mysql.database.azure.com', user = 'smarsproddbuser@mbt-smars-mysql',
-    passwd = 'modern@1234', database = 'mainschema')
-    mycursor = mydatabase.cursor()
+    mycursor = cnx.cursor()
     mycursor.execute('SELECT * FROM finalrating')
     data = mycursor.fetchall()
     title = "Broker Ratings"
@@ -46,8 +38,7 @@ def yearwiseInfo():
     if request.method == 'GET':
         year = request.args.get('year')
         orderBy = request.args.get('orderBy')
-        mydatabase = mysql.connector.connect(host = 'mbt-smars-mysql.mysql.database.azure.com', user = 'smarsproddbuser@mbt-smars-mysql',passwd = 'modern@1234', database = 'mainschema')
-        mycursor = mydatabase.cursor()
+        mycursor = cnx.cursor()
         
         if orderBy == 'descending' :
             sqladd = " ORDER BY Rating DESC;"
@@ -91,19 +82,11 @@ def enterRecommendation():
         target_price=request.form['target_price']
         close_price=request.form['close_price']
         print(broker_name, " ", company_name, " ", current_price, " ", recomended_price, " ", predict_date, " ", target_price, " ", close_price)
-        
-        
-        
-        database_username = 'smarsproddbuser@mbt-smars-mysql'
-        database_password = 'modern@1234'
-        database_ip       = 'mbt-smars-mysql.mysql.database.azure.com'
-        database_name     = 'mainschema'
-        database_connection = sqlalchemy.create_engine('mysql+mysqlconnector://{0}:{1}@{2}/{3}'.format(database_username, database_password, database_ip, database_name))
 
         if form.validate():
         # Save the comment here.
             flash('Record added Successfully')
-            result = database_connection.execute(text("INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES ('"+broker_name+"','"+company_name+"','"+current_price+"','"+recomended_price+"','"+predict_date+"','"+target_price+"','"+close_price+"');"))
+            #result = cnx.execute(text("INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES ('"+broker_name+"','"+company_name+"','"+current_price+"','"+recomended_price+"','"+predict_date+"','"+target_price+"','"+close_price+"');"))
 
         else:
             flash('Error: occurred ')
