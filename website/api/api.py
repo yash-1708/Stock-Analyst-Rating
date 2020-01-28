@@ -9,7 +9,7 @@ cnx = mysql.connector.connect(user="root", password='yash', host="127.0.0.1", po
 @app.route('/getbrokerinfo',methods=['GET'])
 def sendBrokerInfoApi():
     mycursor = cnx.cursor()
-    sqlquery = "SELECT * FROM finalrating"
+    sqlquery = "SELECT broker,Rating FROM finalrating"
     mycursor.execute(sqlquery)
     data = mycursor.fetchall()
     print(type(data))
