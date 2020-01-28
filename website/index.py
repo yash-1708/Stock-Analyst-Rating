@@ -1,12 +1,13 @@
 from flask import Flask,render_template,request,flash
 from recordEnterFrom import RecordEnterForm
 import mysql.connector
-
+from Api.api import api
 
 #cnx = mysql.connector.connect(user="smarsproddbuser@mbt-smars-mysql", password='modern@1234', host="mbt-smars-mysql.mysql.database.azure.com", port=3306, database='mainschema', ssl_disabled=True)
-cnx = mysql.connector.connect(user="root", password='yash', host="127.0.0.1", port=3306, database='mainschema')
+cnx = mysql.connector.connect(user="root", password='root', host="127.0.0.1", port=3306, database='mainschema',use_pure=True)
 app=Flask(__name__)
 app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
+app.register_blueprint(api)
 
 @app.route('/',methods=['GET', 'POST'])
 @app.route('/home')
@@ -22,7 +23,7 @@ def home():
     #return render_template('/home/home.html', yearNo = title)
 
 
-
+ 
 #Broker Info Page function
 @app.route('/brokerInfo/<int:id>')
 def brokerInfo(id):
@@ -100,5 +101,6 @@ def enterRecommendation():
     return render_template('/Enter_Record/recordEnter.html',form=form)
 
 
+#Below line code is necessary for running file as python index.py
 if __name__=='__main__':
     app.run(debug=True)
