@@ -3,7 +3,8 @@ from recordEnterFrom import RecordEnterForm
 import mysql.connector
 
 
-cnx = mysql.connector.connect(user="smarsproddbuser@mbt-smars-mysql", password='modern@1234', host="mbt-smars-mysql.mysql.database.azure.com", port=3306, database='mainschema', ssl_disabled=True)
+#cnx = mysql.connector.connect(user="smarsproddbuser@mbt-smars-mysql", password='modern@1234', host="mbt-smars-mysql.mysql.database.azure.com", port=3306, database='mainschema', ssl_disabled=True)
+cnx = mysql.connector.connect(user="root", password='yash', host="127.0.0.1", port=3306, database='mainschema')
 app=Flask(__name__)
 app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
 
@@ -71,7 +72,7 @@ def recommandlist():
     return render_template('/recommandlist/recommandlist.html')
 
 #Add new Recommendation function
-@app.route('/recomm')
+@app.route('/recomm',methods=['GET', 'POST'])
 def enterRecommendation():
     form=RecordEnterForm(request.form)
     if request.method == 'POST':
@@ -86,9 +87,14 @@ def enterRecommendation():
 
         if form.validate():
         # Save the comment here.
+            mycursor = cnx.cursor()
             flash('Record added Successfully')
-            result = cnx.execute(text("INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES ('"+broker_name+"','"+company_name+"','"+current_price+"','"+recomended_price+"','"+predict_date+"','"+target_price+"','"+close_price+"');"))
-
+            val = (broker_name,company_name,current_price,recomended_price,predict_date,target_price,close_price)
+            sql1 = "INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            mycursor.execute(sql1,val)
+            cnx.commit()
+            #result = cnx.execute(str("INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES ('"+broker_name+"','"+company_name+"','"+current_price+"','"+recomended_price+"','"+predict_date+"','"+target_price+"','"+close_price+"');"))
+            
         else:
             flash('Error: occurred ')
     return render_template('/Enter_Record/recordEnter.html',form=form)
