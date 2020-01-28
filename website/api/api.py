@@ -11,12 +11,12 @@ def sendBrokerInfoApi():
     mycursor = cnx.cursor()
     if year == '2016' :
         sqlquery = "SELECT * FROM finalrating2016"
-        elif year == '2017' :
-            sqlquery = "SELECT * FROM finalrating2017"
-        elif year == '2018' :
-            sqlquery = "SELECT * FROM finalrating2018"
-        else :
-            sqlquery = "SELECT * FROM finalrating"
+    elif year == '2017' :
+        sqlquery = "SELECT * FROM finalrating2017"
+    elif year == '2018' :
+        sqlquery = "SELECT * FROM finalrating2018"
+    else :
+        sqlquery = "SELECT * FROM finalrating"
     
     mycursor.execute(sqlquery)
     data = mycursor.fetchall()
