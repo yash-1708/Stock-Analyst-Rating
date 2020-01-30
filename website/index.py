@@ -15,10 +15,36 @@ def home():
     #get records from database with rating ,Each Record must contain ID of Database
     #and store it in List
     #we will iterate this list in homepage
+    # mycursor = cnx.cursor()
+    # mycursor.execute('SELECT * FROM finalrating')
+    # data = mycursor.fetchall()
+    # title = "Broker Ratings"
+    year = request.args.get('year')
+    orderBy = request.args.get('orderBy')
     mycursor = cnx.cursor()
-    mycursor.execute('SELECT * FROM finalrating')
+        
+    if orderBy == 'descending' :
+        sqladd = " ORDER BY Rating DESC;"
+    else :
+        sqladd = " ORDER BY Rating ASC;"
+
+    sqlquery = "SELECT * FROM finalrating"
+        
+    if year == '2016' :
+        sqlquery = "SELECT * FROM finalrating2016"
+    elif year == '2017' :
+        sqlquery = "SELECT * FROM finalrating2017"
+    elif year == '2018' :
+        sqlquery = "SELECT * FROM finalrating2018"
+    else :
+        sqlquery = "SELECT * FROM finalrating"
+
+    sqlquery = sqlquery + sqladd
+    mycursor.execute(sqlquery)
     data = mycursor.fetchall()
     title = "Broker Ratings"
+    if not year == '9999':
+        title =" Broker Ratings"
     return render_template('/home/home.html', output_data = data, yearNo = title)
     #return render_template('/home/home.html', yearNo = title)
 
@@ -34,43 +60,31 @@ def brokerInfo(id):
 
 
 #Year wise Broker recommendation info function
-@app.route('/yearwiseInfo')
-def yearwiseInfo():
+@app.route('/yearwiseInfo/<string:brokername>',methods=['GET', 'POST'])
+def yearwiseInfo(brokername):
     #fetch Broker stock info yearwise Information On basis of id from database and store it in object
     #this object is referred from html
-    if request.method == 'GET':
-        year = request.args.get('year')
-        orderBy = request.args.get('orderBy')
-        mycursor = cnx.cursor()
-        
-        if orderBy == 'descending' :
-            sqladd = " ORDER BY Rating DESC;"
-        else :
-            sqladd = " ORDER BY Rating ASC;"
+    # if request.method == 'GET':
+    data={}
+    mycursor = cnx.cursor()
 
-        sqlquery = "SELECT * FROM finalrating"
-        
-        if year == '2016' :
-            sqlquery = "SELECT * FROM finalrating2016"
-        elif year == '2017' :
-            sqlquery = "SELECT * FROM finalrating2017"
-        elif year == '2018' :
-            sqlquery = "SELECT * FROM finalrating2018"
-        else :
-            sqlquery = "SELECT * FROM finalrating"
-
-        sqlquery = sqlquery + sqladd
+    years=[2016,2017,2018]
+    for year in years:
+        sqlquery = "select Name,brokerperformance"+ str(year)+".`Hit Ratio`,brokerperformance"+str(year)+".`Avg. growth`,brokerperformance"+str(year)+".`Total Recos`,Rating" 
+        sqlquery=sqlquery+ " FROM brokerperformance"+str(year)+",finalrating"+ str(year)+" where Name='"+brokername+"'And broker='"+brokername+"'"
         mycursor.execute(sqlquery)
-        data = mycursor.fetchall()
-        title = "Broker Ratings"
-        if not year == '9999':
-            title = year + " Broker Ratings"
-    return render_template('/home/home.html', output_data = data, yearNo = title)
+        record = mycursor.fetchall()
+        if len(record)!=0:
+            data[year]=record
+    return render_template('/yearwiseinfo/yearwiseinfo.html', output_data = data,brokername=brokername)
 
-@app.route('/recommandlist')
-def recommandlist():
-    #this object is referred from html
-    return render_template('/recommandlist/recommandlist.html')
+@app.route('/recommandlist/<string:brokername>/<int:year>')
+def recommandlist(brokername,year):
+    mycursor = cnx.cursor()
+    sqlquery = "SELECT distinct * FROM marketsmojorecos where year(predict_date)="+str(year)+ " and broker='"+brokername+"' order by predict_date"
+    mycursor.execute(sqlquery)
+    record = mycursor.fetchall()
+    return render_template('/recommandlist/recommandlist.html',output_data = record,brokername=brokername)
 
 #Add new Recommendation function
 @app.route('/recomm',methods=['GET', 'POST'])

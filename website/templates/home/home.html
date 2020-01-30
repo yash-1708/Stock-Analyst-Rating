@@ -11,7 +11,7 @@
 <div class="table-users">
     <div class="header">{{yearNo}}
         <div style="text-align: right; font-size:small">
-                <form action="/yearwiseInfo" method="GET" name = "filters">
+                <form action="/home" method="GET" name = "filters">
                         <select name = 'orderBy'>
                                 <option value="ascending" selected>Ascending</option>
                                 <option value="descending">Descending</option>
@@ -36,7 +36,7 @@
           <th>Rating</th>
        </tr>
        {% for row in output_data %}
-            <tr>
+            <tr style="cursor:pointer;" onclick='location.href="/yearwiseInfo/{{row[1]}}"'>
                  <!--<td>{{row[0]}}</td> -->
                 <td>{{row[1]}}</td>
                 <td>{{row[5]}}</td>
