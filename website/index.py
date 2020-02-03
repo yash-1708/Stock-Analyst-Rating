@@ -1,10 +1,10 @@
 from flask import Flask,render_template,request,flash
 from recordEnterFrom import RecordEnterForm
 import mysql.connector
-from Api.api import api
+from api.api import api
 
 #cnx = mysql.connector.connect(user="smarsproddbuser@mbt-smars-mysql", password='modern@1234', host="mbt-smars-mysql.mysql.database.azure.com", port=3306, database='mainschema', ssl_disabled=True)
-cnx = mysql.connector.connect(user="root", password='root', host="127.0.0.1", port=3306, database='mainschema',use_pure=True)
+cnx = mysql.connector.connect(user="root", password='yash', host="127.0.0.1", port=3306, database='mainschema',use_pure=True)
 app=Flask(__name__)
 app.config['SECRET_KEY']='b4c3f4b70ec9b4e0' #protect against key and attacks
 app.register_blueprint(api)
@@ -78,13 +78,13 @@ def yearwiseInfo(brokername):
             data[year]=record
     return render_template('/yearwiseinfo/yearwiseinfo.html', output_data = data,brokername=brokername)
 
-@app.route('/recommandlist/<string:brokername>/<int:year>')
-def recommandlist(brokername,year):
+@app.route('/recommendlist/<string:brokername>/<int:year>')
+def recommendlist(brokername,year):
     mycursor = cnx.cursor()
     sqlquery = "SELECT distinct * FROM marketsmojorecos where year(predict_date)="+str(year)+ " and broker='"+brokername+"' order by predict_date"
     mycursor.execute(sqlquery)
     record = mycursor.fetchall()
-    return render_template('/recommandlist/recommandlist.html',output_data = record,brokername=brokername)
+    return render_template('/recommendlist/recommendlist.html',output_data = record,brokername=brokername)
 
 #Add new Recommendation function
 @app.route('/recomm',methods=['GET', 'POST'])
