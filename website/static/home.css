@@ -52,7 +52,7 @@ table tr:nth-child(2n) {
 table tr:nth-child(2n+1) {
    background-color: #edf7f8;
 }
-@media screen and (max-width: 700px) {
+/* @media screen and (max-width: 700px) {
    table, tr, td {
       display: block;
   }
@@ -145,4 +145,4 @@ table tr:nth-child(2n+1) {
       box-shadow: none;
       overflow: visible;
   }
-}
+} */
