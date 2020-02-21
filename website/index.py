@@ -48,11 +48,9 @@ def home():
         if not year == '9999':
             title =" Broker Ratings"
         return render_template('/home/home.html', output_data = data, yearNo = title)
-    except connector.Error as err:
-        if err.errno == connector.errorcode.ER_ACCESS_DENIED_ERROR:
+    except mysql.connector.Error as err:
+        if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DV_ERROR:
-            print("Database does not exist")
         else:
             print(err)
     #return render_template('/home/home.html', yearNo = title)
@@ -90,11 +88,9 @@ def yearwiseInfo(brokername):
             if len(record)!=0:
                 data[year]=record
         return render_template('/yearwiseinfo/yearwiseinfo.html', output_data = data,brokername=brokername)
-    except connector.Error as err:
-        if err.errno == connector.errorcode.ER_ACCESS_DENIED_ERROR:
+    except mysql.connector.Error as err:
+        if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DV_ERROR:
-            print("Database does not exist")
         else:
             print(err)
 
@@ -107,11 +103,9 @@ def recommendlist(brokername,year):
         mycursor.execute(sqlquery)
         record = mycursor.fetchall()
         return render_template('/recommendlist/recommendlist.html',output_data = record,brokername=brokername)
-    except connector.Error as err:
-        if err.errno == connector.errorcode.ER_ACCESS_DENIED_ERROR:
+    except mysql.connector.Error as err:
+        if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DV_ERROR:
-            print("Database does not exist")
         else:
             print(err)
 
@@ -139,11 +133,9 @@ def enterRecommendation():
                 sql1 = "INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 mycursor.execute(sql1,val)
                 cnx.commit()
-            except connector.Error as err:
-                if err.errno == connector.errorcode.ER_ACCESS_DENIED_ERROR:
+            except mysql.connector.Error as err:
+                if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                     print("Something is wrong with your user name or password")
-                elif err.errno == errorcode.ER_BAD_DV_ERROR:
-                    print("Database does not exist")
                 else:
                     print(err)
             #result = cnx.execute(str("INSERT INTO test(broker, company_name, current_price, recomended_buying, predict_date, target_price, close_price) VALUES ('"+broker_name+"','"+company_name+"','"+current_price+"','"+recomended_price+"','"+predict_date+"','"+target_price+"','"+close_price+"');"))
