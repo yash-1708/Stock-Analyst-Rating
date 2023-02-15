@@ -3,4 +3,4 @@ mysql-connector-python == 8.0.18
 flask == 1.1.1
 flask-wtf == 0.14.2
 mysql.connector == 2.2.9
-werkzeug == 0.16.1
+werkzeug == 2.2.3
